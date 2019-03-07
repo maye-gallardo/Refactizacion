@@ -8,21 +8,30 @@ function statement (invoice, plays) {
                   minimumFractionDigits: 2 }).format(aNumber/100);
   }
   
-  for (let perf of invoice.performances) {
 
-    // add volume credits
-    volumeCredits += volumeCreditsFor(perf);
+ 
+
+  for (let perf of invoice.performances) {
 
     // print line for this order
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
     totalAmount += amountFor(perf);
   }
-
+ 
 
   
   result += `Amount owed is ${usd(totalAmount)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
+
+
+  function totalVolumeCredits() {
+    let volumeCredits = 0;
+    for (let perf of invoice.performances) {
+      volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
+   }
 
   function volumeCreditsFor(aPerformance) {
     let result = 0;
