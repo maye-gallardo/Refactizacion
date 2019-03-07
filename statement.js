@@ -1,10 +1,12 @@
 function statement (invoice, plays) {
+  const statementData = {};
+  return renderPlainText(statementData, invoice, plays);
+  }
+
+function renderPlainText(data, invoice, plays) {
   let result = `Statement for ${invoice.customer}\n`;
-
-  for (let perf of invoice.performances) {
-
-    // print line for this order
-    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    for (let perf of invoice.performances) {
+      result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
   }
 
 
@@ -19,7 +21,6 @@ function statement (invoice, plays) {
     }
     return result;
    }
-
 
   function totalVolumeCredits() {
     let result = 0;
@@ -38,12 +39,10 @@ function statement (invoice, plays) {
   function volumeCreditsFor(aPerformance) {
     let result = 0;
     result += Math.max(aPerformance.audience - 30, 0);
-    // add extra credit for every ten comedy attendees
     if ("comedy" === playFor(aPerformance).type)
       result += Math.floor(aPerformance.audience / 5);
     return result;
   }
-
 
   function playFor(aPerformance) {
     return plays[aPerformance.playID];
